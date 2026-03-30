@@ -538,11 +538,96 @@
     .process-num span,
     .icon-box span { transform: skewX(10deg); display: block; }
 
-    .industries {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 18px;
+    .industries-wrap {
+      position: relative;
       margin-top: 34px;
+    }
+
+    .industries {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 18px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding-bottom: 8px;
+    }
+
+    .industries::-webkit-scrollbar { display: none; }
+
+    .industries-fade-right {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 120px;
+      height: calc(100% - 8px);
+      background: linear-gradient(to left, var(--bg) 30%, transparent);
+      pointer-events: none;
+      z-index: 2;
+      transition: opacity 0.3s ease;
+    }
+
+    .industries-fade-left {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 120px;
+      height: calc(100% - 8px);
+      background: linear-gradient(to right, var(--bg) 30%, transparent);
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .ind-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 4;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 2px solid var(--primary);
+      background: var(--surface);
+      color: var(--primary);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.14);
+      transition: background 0.2s ease, color 0.2s ease, opacity 0.3s ease, transform 0.2s ease;
+    }
+
+    .ind-btn:hover {
+      background: var(--primary);
+      color: #fff;
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .ind-btn.ind-btn--prev {
+      left: 10px;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .ind-btn.ind-btn--next {
+      right: 10px;
+      animation: bounceRight 1.6s ease-in-out infinite;
+    }
+
+    .ind-btn.ind-btn--next:hover {
+      animation: none;
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .ind-btn .material-symbols-outlined {
+      font-size: 1.5rem;
+    }
+
+    @keyframes bounceRight {
+      0%, 100% { transform: translateY(-50%) translateX(0); }
+      50% { transform: translateY(-50%) translateX(6px); }
     }
 
     .industry {
@@ -551,6 +636,9 @@
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       overflow: hidden;
+      flex: 0 0 calc(25% - 14px);
+      min-width: 240px;
+      scroll-snap-align: start;
     }
 
     .industry-media {
@@ -978,6 +1066,11 @@
 
     @media (max-width: 780px) {
       .founder-grid { grid-template-columns: 1fr; }
+      .industry { flex: 0 0 calc(50% - 9px); }
+    }
+
+    @media (max-width: 500px) {
+      .industry { flex: 0 0 calc(85% - 9px); }
     }
 
     .delay-1 { transition-delay: 80ms; }
@@ -1067,7 +1160,7 @@
       height: 100%;
       object-fit: cover;
       object-position: center;
-      filter: brightness(0.35);
+      filter: brightness(0.52);
     }
 
     .page-banner-placeholder {
@@ -1482,39 +1575,105 @@
         This homepage demo uses placeholder industries and sample visuals. The final version can swap these with your top real customer segments and category pages.
       </p>
 
-      <div class="industries">
-        <article class="industry reveal-scale delay-1">
-          <div class="industry-media">
-            <img src="https://images.unsplash.com/photo-1513467535987-fd81bc7d62f8?auto=format&fit=crop&w=1200&q=80" alt="Woodworking placeholder" />
-            <div class="industry-tag"><span>Woodworking & Cabinetry</span></div>
-          </div>
-          <div class="industry-body">
-            <h3>Wood Shops</h3>
-            <p>For assembly, repairs, trim work, panel support, and repeat-use jobs where speed and consistency matter.</p>
-          </div>
-        </article>
+      <div class="industries-wrap reveal">
+        <div class="industries" id="industriesTrack">
+          <article class="industry">
+            <div class="industry-media">
+              <img src="https://images.unsplash.com/photo-1513467535987-fd81bc7d62f8?auto=format&fit=crop&w=1200&q=80" alt="Woodworking placeholder" />
+              <div class="industry-tag"><span>Woodworking & Cabinetry</span></div>
+            </div>
+            <div class="industry-body">
+              <h3>Wood Shops</h3>
+              <p>For assembly, repairs, trim work, panel support, and repeat-use jobs where speed and consistency matter.</p>
+            </div>
+          </article>
 
-        <article class="industry reveal-scale delay-2">
-          <div class="industry-media">
-            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80" alt="Fabrication placeholder" />
-            <div class="industry-tag"><span>Repair & Fabrication</span></div>
-          </div>
-          <div class="industry-body">
-            <h3>Auto & Repair</h3>
-            <p>Useful for trim, detail work, plastics, mixed materials, and jobs where the wrong adhesive creates costly rework.</p>
-          </div>
-        </article>
+          <article class="industry">
+            <div class="industry-media">
+              <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80" alt="Fabrication placeholder" />
+              <div class="industry-tag"><span>Repair & Fabrication</span></div>
+            </div>
+            <div class="industry-body">
+              <h3>Auto & Repair</h3>
+              <p>Useful for trim, detail work, plastics, mixed materials, and jobs where the wrong adhesive creates costly rework.</p>
+            </div>
+          </article>
 
-        <article class="industry reveal-scale delay-3">
-          <div class="industry-media">
-            <img src="https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=1200&q=80" alt="Makers placeholder" />
-            <div class="industry-tag"><span>Makers & Specialty Shops</span></div>
-          </div>
-          <div class="industry-body">
-            <h3>Jewelry, Craft & More</h3>
-            <p>For detailed applications where fit, cure control, finish quality, and dependable results all matter.</p>
-          </div>
-        </article>
+          <article class="industry">
+            <div class="industry-media">
+              <img src="https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=1200&q=80" alt="Makers placeholder" />
+              <div class="industry-tag"><span>Makers & Specialty Shops</span></div>
+            </div>
+            <div class="industry-body">
+              <h3>Jewelry, Craft & More</h3>
+              <p>For detailed applications where fit, cure control, finish quality, and dependable results all matter.</p>
+            </div>
+          </article>
+
+          <article class="industry">
+            <div class="industry-media">
+              <img src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=1200&q=80" alt="Metalwork placeholder" />
+              <div class="industry-tag"><span>Metalwork & Fabrication</span></div>
+            </div>
+            <div class="industry-body">
+              <h3>Metal Shops</h3>
+              <p>Bonding and sealing metals, brackets, and structural assemblies where heat and vibration are a factor.</p>
+            </div>
+          </article>
+
+          <article class="industry">
+            <div class="industry-media">
+              <img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1200&q=80" alt="Aviation placeholder" />
+              <div class="industry-tag"><span>Aviation & Aerospace</span></div>
+            </div>
+            <div class="industry-body">
+              <h3>Aviation</h3>
+              <p>High-performance adhesives rated for extreme conditions, vibration, and weight-critical aircraft assemblies.</p>
+            </div>
+          </article>
+
+          <article class="industry">
+            <div class="industry-media">
+              <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80" alt="Electronics placeholder" />
+              <div class="industry-tag"><span>Electronics & PCB</span></div>
+            </div>
+            <div class="industry-body">
+              <h3>Electronics</h3>
+              <p>Precision-cure adhesives and encapsulants for PCB assembly, potting, and component securing.</p>
+            </div>
+          </article>
+
+          <article class="industry">
+            <div class="industry-media">
+              <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1200&q=80" alt="Flooring placeholder" />
+              <div class="industry-tag"><span>Flooring & Installation</span></div>
+            </div>
+            <div class="industry-body">
+              <h3>Flooring</h3>
+              <p>Subfloor bonding, LVP, hardwood, and tile adhesives designed for long-term adhesion in high-traffic areas.</p>
+            </div>
+          </article>
+
+          <article class="industry">
+            <div class="industry-media">
+              <img src="https://images.unsplash.com/photo-1585771724684-38269d6639fd?auto=format&fit=crop&w=1200&q=80" alt="Knife makers placeholder" />
+              <div class="industry-tag"><span>Knife & Blade Makers</span></div>
+            </div>
+            <div class="industry-body">
+              <h3>Knife Makers</h3>
+              <p>Handle adhesives that bond G10, wood, and stabilized blanks cleanly, with long open time for precision fitting.</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="industries-fade-left" id="indFadeLeft"></div>
+        <div class="industries-fade-right" id="indFadeRight"></div>
+        <button class="ind-btn ind-btn--prev" id="indPrev" aria-label="Scroll left">
+          <span class="material-symbols-outlined">chevron_left</span>
+        </button>
+        <button class="ind-btn ind-btn--next" id="indNext" aria-label="Scroll right">
+          <span class="material-symbols-outlined">chevron_right</span>
+        </button>
       </div>
     </div>
   </section>
@@ -1654,6 +1813,46 @@
     }, { threshold: 0.14 });
 
     document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => observer.observe(el));
+
+    const indTrack  = document.getElementById('industriesTrack');
+    const indPrev   = document.getElementById('indPrev');
+    const indNext   = document.getElementById('indNext');
+    const indFadeL  = document.getElementById('indFadeLeft');
+    const indFadeR  = document.getElementById('indFadeRight');
+
+    function getScrollStep() {
+      const card = indTrack.querySelector('.industry');
+      const gap  = 18;
+      return card ? card.offsetWidth + gap : 300;
+    }
+
+    function updateIndNav() {
+      const atStart = indTrack.scrollLeft <= 10;
+      const atEnd   = indTrack.scrollLeft + indTrack.clientWidth >= indTrack.scrollWidth - 10;
+
+      indPrev.style.opacity        = atStart ? '0' : '1';
+      indPrev.style.pointerEvents  = atStart ? 'none' : 'auto';
+      indFadeL.style.opacity       = atStart ? '0' : '1';
+
+      indNext.style.opacity        = atEnd ? '0' : '1';
+      indNext.style.pointerEvents  = atEnd ? 'none' : 'auto';
+      indFadeR.style.opacity       = atEnd ? '0' : '1';
+
+      if (!atEnd) {
+        indNext.style.animation = indTrack.scrollLeft < 10 ? '' : 'none';
+      }
+    }
+
+    if (indTrack) {
+      indTrack.addEventListener('scroll', updateIndNav, { passive: true });
+      indPrev.addEventListener('click', () => {
+        indTrack.scrollBy({ left: -getScrollStep(), behavior: 'smooth' });
+      });
+      indNext.addEventListener('click', () => {
+        indTrack.scrollBy({ left: getScrollStep(), behavior: 'smooth' });
+      });
+      updateIndNav();
+    }
   </script>
 </body>
 </html>
