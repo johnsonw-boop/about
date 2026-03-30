@@ -1281,6 +1281,59 @@
       border: 0;
     }
 
+    .video-thumb {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      cursor: pointer;
+      z-index: 2;
+      transition: filter 0.25s ease;
+      filter: brightness(0.88);
+    }
+
+    .video-thumb:hover { filter: brightness(0.7); }
+
+    .video-play-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 3;
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.92);
+      border: none;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 6px 32px rgba(0,0,0,0.35);
+      transition: transform 0.2s ease, background 0.2s ease;
+      pointer-events: none;
+    }
+
+    .video-thumb:hover ~ .video-play-btn,
+    .video-play-btn:hover {
+      transform: translate(-50%, -50%) scale(1.1);
+      background: #fff;
+    }
+
+    .video-play-btn .material-symbols-outlined {
+      font-size: 2.4rem;
+      color: var(--primary);
+    }
+
+    .video-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      cursor: pointer;
+    }
+
+    .video-overlay:hover ~ .video-play-btn { transform: translate(-50%, -50%) scale(1.1); }
+
     .video-placeholder {
       display: flex;
       flex-direction: column;
@@ -1823,8 +1876,17 @@
       <div class="eyebrow reveal">See us in action</div>
       <h2 class="reveal delay-1">Get to know CEC Corp.</h2>
       <p class="reveal delay-2">Watch a short overview of who we are, what we do, and how we help businesses choose the right adhesive the first time.</p>
-      <div class="video-wrap reveal delay-3">
-        <iframe src="https://www.youtube.com/embed/kNqROmuOvSU?si=Ca34N2tuPjACrQ5F" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      <div class="video-wrap reveal delay-3" id="videoWrap">
+        <iframe id="videoIframe" src="" data-src="https://www.youtube.com/embed/kNqROmuOvSU?si=Ca34N2tuPjACrQ5F&autoplay=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <img
+          class="video-thumb"
+          id="videoThumb"
+          src="cec-logo.png"
+          alt="Play CEC Corp video"
+        />
+        <button class="video-play-btn" aria-label="Play video">
+          <span class="material-symbols-outlined">play_arrow</span>
+        </button>
       </div>
     </div>
   </section>
@@ -1889,6 +1951,22 @@
         indTrack.scrollBy({ left: getScrollStep(), behavior: 'smooth' });
       });
       updateIndNav();
+    }
+
+    const videoThumb = document.getElementById('videoThumb');
+    const videoIframe = document.getElementById('videoIframe');
+    const videoPlayBtn = document.querySelector('.video-play-btn');
+
+    function playVideo() {
+      videoIframe.src = videoIframe.dataset.src;
+      videoThumb.style.display = 'none';
+      videoPlayBtn.style.display = 'none';
+    }
+
+    if (videoThumb) {
+      videoThumb.addEventListener('click', playVideo);
+      videoPlayBtn.addEventListener('click', playVideo);
+      videoPlayBtn.style.pointerEvents = 'auto';
     }
   </script>
 </body>
