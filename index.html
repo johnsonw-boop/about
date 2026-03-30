@@ -389,6 +389,8 @@
       box-shadow: var(--shadow);
       position: relative;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
     }
 
     .card::before {
@@ -419,6 +421,40 @@
     .card ul {
       padding-left: 18px;
       margin: 14px 0 0;
+      flex: 1;
+    }
+
+    .card-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 20px;
+      padding: 12px 18px;
+      background: transparent;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+      border-radius: calc(var(--radius) - 4px);
+      font-size: 0.88rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      transition: background 160ms ease, color 160ms ease, transform 160ms ease;
+    }
+
+    .card-btn:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .card-btn .material-symbols-outlined {
+      font-size: 18px;
+      transition: transform 160ms ease;
+    }
+
+    .card-btn:hover .material-symbols-outlined {
+      transform: translateX(4px);
     }
 
     .two-col {
@@ -1020,7 +1056,8 @@
       height: clamp(260px, 36vw, 480px);
       overflow: hidden;
       display: flex;
-      align-items: flex-end;
+      align-items: center;
+      justify-content: center;
     }
 
     .page-banner-img {
@@ -1030,7 +1067,7 @@
       height: 100%;
       object-fit: cover;
       object-position: center;
-      filter: brightness(0.55);
+      filter: brightness(0.35);
     }
 
     .page-banner-placeholder {
@@ -1051,8 +1088,11 @@
       position: relative;
       z-index: 1;
       width: 100%;
-      padding: clamp(24px, 4vw, 48px) clamp(16px, 4vw, 80px);
-      background: linear-gradient(to top, rgba(36,31,33,0.72) 0%, transparent 100%);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
 
     .page-banner-content h1 {
@@ -1071,7 +1111,7 @@
     }
 
     .video-section {
-      background: var(--secondary);
+      background: var(--bg);
       padding: var(--section-space) 0;
     }
 
@@ -1081,13 +1121,13 @@
     .video-section h2 {
       font-size: clamp(1.5rem, 3vw, 2.2rem);
       font-weight: 600;
-      color: white;
+      color: var(--text);
       letter-spacing: -0.01em;
       margin-bottom: 10px;
     }
 
     .video-section p {
-      color: rgba(255,255,255,0.7);
+      color: var(--muted);
       font-size: 1rem;
       margin-bottom: 32px;
       max-width: 600px;
@@ -1194,11 +1234,9 @@
 <body>
 
   <div class="page-banner">
-    <!-- Replace the placeholder below with your warehouse image: <img class="page-banner-img" src="your-image.jpg" alt="CEC Corp warehouse" /> -->
-    <div class="page-banner-placeholder">Your warehouse image goes here</div>
+    <img class="page-banner-img" src="https://ame-elite.com/wp-content/uploads/2019/09/DJI_0101-1-1.jpg" alt="CEC Corp warehouse" />
     <div class="page-banner-content">
       <h1>About CEC Corp</h1>
-      <p>A Canadian adhesive company built on application expertise, practical guidance, and a commitment to getting it right.</p>
     </div>
   </div>
 
@@ -1323,6 +1361,7 @@
             <li>Useful across crafts, repairs, and shop workflows</li>
             <li>Available with accelerator support</li>
           </ul>
+          <a href="/collections/ca-glue" class="card-btn">Shop CA Glue <span class="material-symbols-outlined">arrow_forward</span></a>
         </article>
 
         <article class="card reveal delay-2">
@@ -1334,6 +1373,7 @@
             <li>Useful where strength matters more than speed</li>
             <li>Good fit for repair and fabrication work</li>
           </ul>
+          <a href="/collections/epoxy" class="card-btn">Shop Epoxy <span class="material-symbols-outlined">arrow_forward</span></a>
         </article>
 
         <article class="card reveal delay-3">
@@ -1345,6 +1385,7 @@
             <li>Helpful where expansion and moisture matter</li>
             <li>Reliable for ongoing shop use</li>
           </ul>
+          <a href="/collections/polyurethane" class="card-btn">Shop Polyurethane <span class="material-symbols-outlined">arrow_forward</span></a>
         </article>
 
         <article class="card reveal delay-4">
@@ -1356,6 +1397,7 @@
             <li>Help teams work faster with fewer mistakes</li>
             <li>Designed to support real production use</li>
           </ul>
+          <a href="/collections/tools" class="card-btn">Shop Tools <span class="material-symbols-outlined">arrow_forward</span></a>
         </article>
       </div>
     </div>
@@ -1531,15 +1573,6 @@
           </article>
         </div>
 
-        <div class="quote-carousel-nav">
-          <button class="carousel-btn" id="quotePrev" aria-label="Previous">
-            <span class="material-symbols-outlined">arrow_back</span>
-          </button>
-          <button class="carousel-btn" id="quoteNext" aria-label="Next">
-            <span class="material-symbols-outlined">arrow_forward</span>
-          </button>
-          <div class="carousel-dots" id="quoteDots"></div>
-        </div>
       </div>
     </div>
   </section>
@@ -1595,13 +1628,7 @@
       <h2 class="reveal delay-1">Get to know CEC Corp.</h2>
       <p class="reveal delay-2">Watch a short overview of who we are, what we do, and how we help businesses choose the right adhesive the first time.</p>
       <div class="video-wrap reveal delay-3">
-        <!-- Paste your iframe embed here when ready. Example:
-        <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID" allowfullscreen></iframe>
-        -->
-        <div class="video-placeholder">
-          <span class="material-symbols-outlined">play_circle</span>
-          <span>Video coming soon</span>
-        </div>
+        <iframe src="https://www.youtube.com/embed/kNqROmuOvSU?si=Ca34N2tuPjACrQ5F" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
       </div>
     </div>
   </section>
